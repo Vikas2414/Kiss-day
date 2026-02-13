@@ -141,20 +141,18 @@
         box-shadow: 0 4px 15px rgba(255, 8, 68, 0.4);
     }
 
+    /* Looks like a standard "Yes" button */
     #yesBtn {
         background: #c2185b; 
         color: white;
         box-shadow: 0 4px 10px rgba(194, 24, 91, 0.4);
-        z-index: 20;
     }
 
-    #noBtn {
-        background: #ff8a80; 
-        color: #d50000;
-        box-shadow: 0 4px 10px rgba(255, 138, 128, 0.4);
-        position: relative; 
-        transition: top 0.3s ease, left 0.3s ease; 
-        z-index: 100;
+    /* Designed to look exactly like the "No/Reject" buttons from previous days */
+    #returnBtn {
+        background: #ff5252; 
+        color: white;
+        box-shadow: 0 4px 10px rgba(255, 82, 82, 0.4);
     }
 
     .hidden { display: none !important; }
@@ -181,7 +179,7 @@
 
         <div class="btn-group">
             <button id="yesBtn">Accept 💋</button>
-            <button id="noBtn">Return 🚫</button>
+            <button id="returnBtn">Return</button>
         </div>
     </div>
 </div>
@@ -192,7 +190,7 @@ const startBtn = document.getElementById("startBtn");
 const content = document.getElementById("content");
 const typingText = document.getElementById("typingText");
 const yesBtn = document.getElementById("yesBtn");
-const noBtn = document.getElementById("noBtn");
+const returnBtn = document.getElementById("returnBtn");
 const musicFrame = document.getElementById("music");
 const mainTitle = document.getElementById("mainTitle");
 const subTitle = document.getElementById("subTitle");
@@ -207,33 +205,22 @@ I am sending this virtual courier. ✨
 
 Consider it a down-payment for all the real ones I'll give you starting next week.
 
-Will you accept this delivery from your Viku? 😘`;
+What would you like to do with this delivery? 😘`;
 
 // Convert string to array to handle emojis safely
 const messageArray = Array.from(message);
 
-// TAUNTS for No
-const taunts = [
-    "Return to sender is NOT allowed! 🚫",
-    "Chittorgarh flight cancel kar dunga! (Just kidding 😂) ✈️",
-    "You are blushing, I know it! 😊",
-    "8 din bache hain, nakhre mat karo! 😜",
-    "Delivery attempt failed... trying again! 📦",
-    "Just press Accept, Seju! 😘"
-];
-let tauntIndex = 0;
-
 // --- BACKGROUND FLOATING ELEMENTS ---
 function createBg() {
     const container = document.getElementById('bg-container');
-    if (!container) return; // Safety check
+    if (!container) return; 
     const el = document.createElement('div');
     el.classList.add('kiss-bg');
     const items = ['💋', '❤️', '✨', '😘', '💌'];
     el.innerText = items[Math.floor(Math.random() * items.length)];
     
     el.style.left = Math.random() * 100 + 'vw';
-    el.style.animationDuration = (Math.random() * 4 + 4) + 's'; // Slightly faster
+    el.style.animationDuration = (Math.random() * 4 + 4) + 's'; 
     el.style.fontSize = (Math.random() * 25 + 20) + 'px';
     
     container.appendChild(el);
@@ -257,35 +244,16 @@ startBtn.onclick = () => {
     startBtn.style.display = "none";
     content.classList.remove("hidden");
     
-    // Change Titles
     if (mainTitle) mainTitle.innerText = "Virtual Kiss 💋";
     if (subTitle) subTitle.innerText = "8 Days to Go!";
     
     // Play romantic background music
     if (musicFrame) musicFrame.src = "https://www.youtube.com/embed/Pkh8UtuejGw?autoplay=1&loop=1"; 
     
-    // Start typing
     typeEffect();
 };
 
-// --- NO BUTTON LOGIC (Dodge & Taunt) ---
-noBtn.addEventListener('click', (e) => {
-    e.preventDefault();
-    alert(taunts[tauntIndex % taunts.length]);
-    tauntIndex++;
-    
-    const maxX = window.innerWidth - noBtn.offsetWidth - 40; 
-    const maxY = window.innerHeight - noBtn.offsetHeight - 40;
-    
-    const randomX = Math.max(20, Math.random() * maxX);
-    const randomY = Math.max(20, Math.random() * maxY);
-
-    noBtn.style.position = "fixed"; 
-    noBtn.style.left = randomX + "px";
-    noBtn.style.top = randomY + "px";
-});
-
-// --- YES BUTTON SUCCESS ---
+// --- YES BUTTON (NORMAL ACCEPT) ---
 yesBtn.onclick = () => {
     document.querySelector('.container').innerHTML = `
         <div>
@@ -301,7 +269,26 @@ yesBtn.onclick = () => {
             </div>
         </div>
     `;
-    // Make hearts fall faster!
+    setInterval(createBg, 100);
+};
+
+// --- RETURN BUTTON (THE MASTER PRANK) ---
+returnBtn.onclick = () => {
+    document.querySelector('.container').innerHTML = `
+        <div>
+            <h1 style="color: #ff0844; font-family: 'Caveat', cursive; font-size: 38px;">GOTCHA! 😜💋</h1>
+            <p style="font-size: 16px; color: #444; margin: 15px 0; font-weight: 700; line-height: 1.5;">
+                You thought you were rejecting it, right? 😂<br>
+                But "Return to Sender" means you just kissed me back! 🔄<br>
+                Mission Accomplished by Viku! 😎<br>
+                <b>See you in 8 days, Wifey! ❤️</b>
+            </p>
+            <div style="border-radius:12px; overflow:hidden; border: 2px solid #ff0844;">
+                <img style="width: 100%; display:block;" 
+                     src="https://media.giphy.com/media/xT0xezQGU5xCDJuCPe/giphy.gif">
+            </div>
+        </div>
+    `;
     setInterval(createBg, 100);
 };
 </script>
